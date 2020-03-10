@@ -1,6 +1,7 @@
 package com.stefanini.servico;
 
 import com.stefanini.dao.PessoaDao;
+import com.stefanini.exception.NegocioException;
 import com.stefanini.model.Pessoa;
 
 import javax.ejb.*;
@@ -32,6 +33,9 @@ public class PessoaServico implements Serializable {
 	@Inject
 	private PessoaDao dao;
 
+	@Inject
+	private PessoaPerfilServico pessoaPerfilServico;
+
 	/**
 	 * Salvar os dados de uma Pessoa
 	 */
@@ -43,6 +47,12 @@ public class PessoaServico implements Serializable {
 	 * Validando se existe pessoa com email
 	 */
 	public Boolean validarPessoa(@Valid Pessoa pessoa){
+		if(pessoa.getId() != null){
+			Optional<Pessoa> encontrar = dao.encontrar(pessoa.getId());
+			if(encontrar.get().getEmail().equals(pessoa.getEmail())){
+				return Boolean.TRUE;
+			}
+		}
 		Optional<Pessoa> pessoa1 = dao.buscarPessoaPorEmail(pessoa.getEmail());
 		return pessoa1.isEmpty();
 	}
@@ -59,8 +69,12 @@ public class PessoaServico implements Serializable {
 	 * Remover uma pessoa pelo id
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public void remover(@Valid Long id) {
-		dao.remover(id);
+	public void remover(@Valid Long id) throws NegocioException {
+		if(pessoaPerfilServico.buscarPessoaPerfil(id,null).count() == 0){
+			dao.remover(id);
+			return;
+		}
+		throw new NegocioException("Não foi possivel remover a pessoa");
 	}
 
 	/**
