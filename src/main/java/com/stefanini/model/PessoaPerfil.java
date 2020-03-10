@@ -12,10 +12,15 @@ public class PessoaPerfil implements Serializable {
     @Column(name = "co_seq_pessoal_perfil")
     private Long id;
 
-    @ManyToOne
+    @Column(name = "co_seq_perfil",insertable = false,updatable = false)
+    private Long idPerfil;
+    @Column(name = "co_seq_pessoa",insertable = false,updatable = false)
+    private Long idPessoa;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "co_seq_perfil", referencedColumnName = "co_seq_perfil", nullable = false)
     private Perfil perfil;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "co_seq_pessoa", referencedColumnName = "co_seq_pessoa", nullable = false)
     private Pessoa pessoa;
 
@@ -26,6 +31,26 @@ public class PessoaPerfil implements Serializable {
     public PessoaPerfil(Perfil perfil, Pessoa pessoa) {
         this.perfil = perfil;
         this.pessoa = pessoa;
+    }
+
+    public Long getIdPerfil() {
+        return idPerfil;
+    }
+
+    public void setIdPerfil(Long idPerfil) {
+        this.idPerfil = idPerfil;
+    }
+
+    public Long getIdPessoa() {
+        return idPessoa;
+    }
+
+    public void setIdPessoa(Long idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     public void setPessoa(Pessoa pessoa) {

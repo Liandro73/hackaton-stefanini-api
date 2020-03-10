@@ -1,4 +1,4 @@
-package com.stefanini.resource;
+package com.stefanini.resource.util;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

@@ -2,19 +2,14 @@ package com.stefanini.servico;
 
 import com.stefanini.dao.PessoaDao;
 import com.stefanini.model.Pessoa;
-import com.stefanini.util.IGenericService;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import javax.ejb.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -28,10 +23,12 @@ import java.util.Optional;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class PessoaServico implements Serializable {
 
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	@Inject
 	private PessoaDao dao;
 
@@ -42,11 +39,18 @@ public class PessoaServico implements Serializable {
 	public Pessoa salvar(@Valid Pessoa pessoa) {
 		return dao.salvar(pessoa);
 	}
+	/**
+	 * Validando se existe pessoa com email
+	 */
+	public Boolean validarPessoa(@Valid Pessoa pessoa){
+		Optional<Pessoa> pessoa1 = dao.buscarPessoaPorEmail(pessoa.getEmail());
+		return pessoa1.isEmpty();
+	}
 
 	/**
 	 * Atualizar o dados de uma pessoa
 	 */
-//	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Pessoa atualizar(@Valid Pessoa entity) {
 		return dao.atualizar(entity);
 	}
@@ -54,7 +58,7 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Remover uma pessoa pelo id
 	 */
-//	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void remover(@Valid Long id) {
 		dao.remover(id);
 	}
@@ -62,7 +66,6 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Buscar uma lista de Pessoa
 	 */
-//	@Override
 	public Optional<List<Pessoa>> getList() {
 		return dao.getList();
 	}

@@ -1,11 +1,11 @@
-package com.stefanini.util;
+package com.stefanini.dao.interfaces;
 
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface IGenericService<T, I extends Serializable> {
+public interface IGenericDao<T, I extends Serializable> {
 
 	/**
 	 * Salvar uma entidade

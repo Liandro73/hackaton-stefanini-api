@@ -1,10 +1,9 @@
 package com.stefanini.dao.abstracao;
 
-import com.stefanini.util.IGenericService;
 
-import javax.inject.Inject;
+import com.stefanini.dao.interfaces.IGenericDao;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,8 +18,7 @@ import java.util.Optional;
  * @param <T>
  * @param <I>
  */
-public abstract class GenericDao<T, I extends Serializable> implements IGenericService<T, I>{
-
+public abstract class GenericDao<T, I extends Serializable> implements IGenericDao<T, I> {
 
 
 	@PersistenceContext(unitName="jpa")
