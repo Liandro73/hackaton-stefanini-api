@@ -77,7 +77,7 @@ public class EnderecoResource {
     public Response deletarEndereco(@PathParam("id") Long id) {
         if(enderecoServico.encontrar(id).isPresent()){
             enderecoServico.remover(id);
-            return Response.ok().entity(new SucessoDto("endereco removido com sucesso "+id)).build();
+            return Response.status(Response.Status.OK).build();
         }else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

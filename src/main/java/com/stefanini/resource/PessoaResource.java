@@ -86,7 +86,7 @@ public class PessoaResource {
 		try{
 			if(pessoaServico.encontrar(id).isPresent()){
 				pessoaServico.remover(id);
-				return Response.ok().entity(new SucessoDto("pessoa removida com sucesso "+id)).build();
+				return Response.status(Response.Status.OK).build();
 			}else {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}

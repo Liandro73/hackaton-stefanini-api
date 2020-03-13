@@ -87,7 +87,7 @@ public class PerfilResource {
         try{
             if(perfilServico.encontrar(id).isPresent()){
                 perfilServico.remover(id);
-                return Response.ok().entity(new SucessoDto("perfil removido com sucesso "+id)).build();
+                return Response.status(Response.Status.OK).build();
             }else {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }

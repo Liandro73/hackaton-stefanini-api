@@ -45,7 +45,7 @@ public class EnderecoServico implements Serializable {
 
 
 	public Optional<List<Endereco>> getList() {
-		return Optional.empty();
+		return dao.getList();
 	}
 
 	public Optional<Endereco> encontrar(Long id) {
