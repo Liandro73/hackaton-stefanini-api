@@ -43,7 +43,7 @@ public class Perfil implements Serializable {
      *
      */
     @Column(name = "dt_hora_inclusao")
-    @NotNull
+//    @NotNull
     private LocalDateTime dataHoraInclusao;
 
     /**

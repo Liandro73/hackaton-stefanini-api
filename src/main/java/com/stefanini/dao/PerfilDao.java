@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 import java.util.Optional;
 
 /**
- * O Unico objetivo da Dao 
+ * O Unico objetivo da Dao
  * @author joaopedromilhome
  *
  */
@@ -19,11 +19,11 @@ public class PerfilDao extends GenericDao<Perfil, Long> {
 	}
 
 	/**
-	 * Efetuando busca de Pessoa por email
+	 * Efetuando busca de Perfil por nome
 	 * @param nome
 	 * @return
 	 */
-	public Optional<Perfil> buscarPessoaPorNome(String nome){
+	public Optional<Perfil> buscarPerfilPorNome(String nome){
 		TypedQuery<Perfil> q2 =
 				entityManager.createQuery(" select p from Perfil p where p.nome=:nome", Perfil.class);
 		q2.setParameter("nome", nome);

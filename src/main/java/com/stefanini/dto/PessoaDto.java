@@ -7,10 +7,13 @@ import java.util.Set;
 
 import com.stefanini.model.Endereco;
 import com.stefanini.model.Perfil;
+import lombok.Data;
 
+@Data
 public class PessoaDto implements Serializable {
+
 	/**
-	 * 
+	 * Serializacao da Classe
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -22,59 +25,4 @@ public class PessoaDto implements Serializable {
 	private Set<Endereco> enderecos = new HashSet<>();
 	private Set<Perfil> perfils = new HashSet<>();
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public Boolean getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(Boolean situacao) {
-		this.situacao = situacao;
-	}
-
-	public Set<Endereco> getEnderecos() {
-		return enderecos;
-	}
-
-	public void setEnderecos(Set<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
-	public Set<Perfil> getPerfils() {
-		return perfils;
-	}
-
-	public void setPerfils(Set<Perfil> perfils) {
-		this.perfils = perfils;
-	}
 }
