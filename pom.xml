@@ -66,11 +66,18 @@
 			<version>1.18.12</version>
 			<scope>provided</scope>
 		</dependency>
+
+<!--    ViaCep    -->
+		<dependency>
+			<groupId>com.github.gilberto-torrezan</groupId>
+			<artifactId>viacep</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<finalName>WebAppTreinamento</finalName>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

@@ -60,17 +60,20 @@ public class Pessoa implements Serializable {
     @Column(name = "ST_PESSOA")
     private Boolean situacao;
 
+    @Column(name = "DS_CAMINHO_IMAGEM")
+    private String caminhoImagem;
+
     /**
      * Mapeamento de Enderecos Unidirecional
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "CO_SEQ_PESSOA", referencedColumnName = "CO_SEQ_PESSOA")
     private Set<Endereco> enderecos = new HashSet<>();
 
     /**
      * Mapeamento de Perfis Unidirecional
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "TB_PESSOA_PERFIL",
             joinColumns = {@JoinColumn(name = "CO_SEQ_PESSOA")},
