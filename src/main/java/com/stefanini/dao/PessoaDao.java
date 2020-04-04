@@ -40,11 +40,9 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 	 */
 	@Override
 	public Optional<List<Pessoa>> getList() {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Pessoa> query = builder.createQuery(Pessoa.class);
-//		Root<Pessoa> root = query.from(Pessoa.class);
-//		query.orderBy(builder.asc(root.get("nome")));
-		return Optional.of(getEntityManager().createQuery("select p from Pessoa p order by nome", Pessoa.class).getResultList());
+		return Optional.of(getEntityManager().createQuery(
+				"select distinct p from Pessoa p left join fetch p.enderecos left join fetch p.perfils " +
+						"ORDER BY p.nome", Pessoa.class).getResultList());
 	}
 
 }

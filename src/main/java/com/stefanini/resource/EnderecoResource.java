@@ -1,8 +1,8 @@
 package com.stefanini.resource;
 
-import com.stefanini.dto.SucessoDto;
 import com.stefanini.model.Endereco;
 import com.stefanini.servico.EnderecoServico;
+import com.stefanini.servico.ViaCepServico;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -25,6 +25,12 @@ public class EnderecoResource {
      */
     @Inject
     private EnderecoServico enderecoServico;
+
+    /**
+     * Classe de servico da WebService VIACEP
+     */
+    @Inject
+    private ViaCepServico viaCepServico;
     /**
      *
      */
@@ -33,7 +39,6 @@ public class EnderecoResource {
 
 
     /**
-     *
      * @return
      */
     @GET
@@ -46,7 +51,6 @@ public class EnderecoResource {
     }
 
     /**
-     *
      * @param endereco
      * @return
      */
@@ -57,7 +61,6 @@ public class EnderecoResource {
 
 
     /**
-     *
      * @param endereco
      * @return
      */
@@ -66,26 +69,22 @@ public class EnderecoResource {
         return Response.ok(enderecoServico.atualizar(endereco)).build();
     }
 
-
     /**
-     *
      * @param id
      * @return
      */
     @DELETE
     @Path("{id}")
     public Response deletarEndereco(@PathParam("id") Long id) {
-        if(enderecoServico.encontrar(id).isPresent()){
+        if (enderecoServico.encontrar(id).isPresent()) {
             enderecoServico.remover(id);
             return Response.status(Response.Status.OK).build();
-        }else {
+        } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
-
     /**
-     *
      * @param id
      * @return
      */
@@ -93,6 +92,16 @@ public class EnderecoResource {
     @Path("{id}")
     public Response obterEndereco(@PathParam("id") Long id) {
         return enderecoServico.encontrar(id).map(endereco -> Response.ok(endereco).build()).orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
+    }
+
+    /**
+     * @param cep
+     * @return
+     */
+    @GET
+    @Path("buscar/{cep}")
+    public Response obterCep(@PathParam("cep") String cep) {
+        return Response.ok(viaCepServico.buscarCep(cep)).build();
     }
 
 }

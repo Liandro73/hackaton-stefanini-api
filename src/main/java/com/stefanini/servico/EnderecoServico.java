@@ -28,7 +28,7 @@ public class EnderecoServico implements Serializable {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Endereco salvar(@Valid Endereco endereco) {
-        return dao.salvar(cepServico.converterCep(endereco));
+        return dao.salvar(endereco);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

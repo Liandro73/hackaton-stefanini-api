@@ -2,21 +2,21 @@ package com.stefanini.servico;
 
 import com.stefanini.dao.PessoaDao;
 import com.stefanini.exception.NegocioException;
+import com.stefanini.model.Endereco;
 import com.stefanini.model.Pessoa;
 
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * 
  * Classe de servico, as regras de negocio devem estar nessa classe
- * 
- * @author joaopedromilhome
  *
+ * @author joaopedromilhome
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -24,71 +24,88 @@ import java.util.Optional;
 public class PessoaServico implements Serializable {
 
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Inject
-	private PessoaDao dao;
+    @Inject
+    private PessoaDao dao;
 
-	@Inject
-	private PessoaPerfilServico pessoaPerfilServico;
+    @Inject
+    private EnderecoServico enderecoServico;
 
-	/**
-	 * Salvar os dados de uma Pessoa
-	 */
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Pessoa salvar(@Valid Pessoa pessoa) {
-		return dao.salvar(pessoa);
-	}
-	/**
-	 * Validando se existe pessoa com email
-	 */
-	public Boolean validarPessoa(@Valid Pessoa pessoa){
-		if(pessoa.getId() != null){
-			Optional<Pessoa> encontrar = dao.encontrar(pessoa.getId());
-			if(encontrar.get().getEmail().equals(pessoa.getEmail())){
-				return Boolean.TRUE;
-			}
-		}
-		Optional<Pessoa> pessoa1 = dao.buscarPessoaPorEmail(pessoa.getEmail());
-		return pessoa1.isEmpty();
-	}
+    @Inject
+    private PessoaPerfilServico pessoaPerfilServico;
 
-	/**
-	 * Atualizar o dados de uma pessoa
-	 */
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Pessoa atualizar(@Valid Pessoa entity) {
-		return dao.atualizar(entity);
-	}
+    /**
+     * Salvar os dados de uma Pessoa
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Pessoa salvar(@Valid Pessoa pessoa) {
 
-	/**
-	 * Remover uma pessoa pelo id
-	 */
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public void remover(@Valid Long id) throws NegocioException {
-		if(pessoaPerfilServico.buscarPessoaPerfil(id,null).count() == 0){
-			dao.remover(id);
-			return;
-		}
-		throw new NegocioException("Não foi possivel remover a pessoa");
-	}
+        List<Endereco> enderecos = new ArrayList<>();
+        for (Endereco enderecoDaPessoa : pessoa.getEnderecos()) {
+            enderecos.add(enderecoDaPessoa);
+        }
 
-	/**
-	 * Buscar uma lista de Pessoa
-	 */
-	public Optional<List<Pessoa>> getList() {
-		return dao.getList();
-	}
+        pessoa.getEnderecos().clear();
+        Pessoa pessoaSalva = dao.salvar(pessoa);
 
-	/**
-	 * Buscar uma Pessoa pelo ID
-	 */
+        for (Endereco enderecoSalvo : enderecos) {
+            enderecoSalvo.setIdPessoa(pessoaSalva.getId());
+            enderecoServico.salvar(enderecoSalvo);
+        }
+        return pessoaSalva;
+    }
+
+    /**
+     * Validando se existe pessoa com email
+     */
+    public Boolean validarPessoa(@Valid Pessoa pessoa) {
+        if (pessoa.getId() != null) {
+            Optional<Pessoa> encontrar = dao.encontrar(pessoa.getId());
+            if (encontrar.get().getEmail().equals(pessoa.getEmail())) {
+                return Boolean.TRUE;
+            }
+        }
+        Optional<Pessoa> pessoa1 = dao.buscarPessoaPorEmail(pessoa.getEmail());
+        return pessoa1.isEmpty();
+    }
+
+    /**
+     * Atualizar o dados de uma pessoa
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Pessoa atualizar(@Valid Pessoa entity) {
+        return dao.atualizar(entity);
+    }
+
+    /**
+     * Remover uma pessoa pelo id
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void remover(@Valid Long id) throws NegocioException {
+        if (pessoaPerfilServico.buscarPessoaPerfil(id, null).count() == 0) {
+            dao.remover(id);
+            return;
+        }
+        throw new NegocioException("Não foi possivel remover a pessoa");
+    }
+
+    /**
+     * Buscar uma lista de Pessoa
+     */
+    public Optional<List<Pessoa>> getList() {
+        return dao.getList();
+    }
+
+    /**
+     * Buscar uma Pessoa pelo ID
+     */
 //	@Override
-	public Optional<Pessoa> encontrar(Long id) {
-		return dao.encontrar(id);
-	}
+    public Optional<Pessoa> encontrar(Long id) {
+        return dao.encontrar(id);
+    }
 
 }
