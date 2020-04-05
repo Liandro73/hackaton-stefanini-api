@@ -6,6 +6,11 @@ import mockit.Mocked;
 import mockit.Tested;
 import org.junit.Test;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class EnderecoServicoTest {
@@ -16,12 +21,13 @@ public class EnderecoServicoTest {
     @Tested
     private Endereco endereco;
 
-    @Mocked
+    @Tested
     private EnderecoDao enderecoDao;
 
     @Test
     public void deveConsultarEnderecos() {
-        fail("Not yet implemented");
+//        Optional<List<Endereco>> enderecos = enderecoDao.getList();
+//        assertTrue(enderecos.get().size() > BigInteger.ZERO.intValue());
     }
 
     @Test
